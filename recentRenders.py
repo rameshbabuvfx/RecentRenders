@@ -7,9 +7,9 @@ from PySide2.QtGui import *
 from thumbnails import *
 
 
-class ListWidget(QListWidget):
+class TableWidget(QTableWidget):
     def __init__(self):
-        super(ListWidget, self).__init__()
+        super(TableWidget, self).__init__()
         self.resize(500, 600)
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
@@ -30,18 +30,28 @@ class ListWidget(QListWidget):
 class DisplayRenders(QWidget):
     def __init__(self):
         super(DisplayRenders, self).__init__()
-        self.resize(500, 600)
+        self.resize(800, 600)
         self.gblayout = QGridLayout()
-        self.list_widget = ListWidget()
-        self.gblayout.addWidget(self.list_widget)
+        self.table_widget = TableWidget()
+        self.gblayout.addWidget(self.table_widget)
         self.setLayout(self.gblayout)
-        self.list_widget.setViewMode(QListWidget.IconMode)
 
-        for i in range(10):
-            item = QListWidgetItem("D:\personal\RedChillies Docs\RameshBabu-Photo.jpg")
-            # item.setIcon(QIcon(r"F:\NukePython\RecentRenders\thumbnails\blackadam.jpg"))
-            self.list_widget.addItem(item)
+        self.table_widget.setRowCount(10)
+        self.table_widget.setColumnCount(4)
+        self.table_widget.setRowHeight(1,160)
+        self.table_widget.setColumnWidth(1,205)
+        self.table_widget.setIconSize(QSize(100,100))
+        self.table_widget.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
+        item = QTableWidgetItem(r"F:\NukePython\RecentRenders\thumbnails\blackadam.jpg")
+        self.table_widget.setItem(1, 1, item)
+        label = QLabel()
+        pixmap = QPixmap(r"F:\NukePython\RecentRenders\thumbnails\blackadam.jpg")
+        label.setPixmap(pixmap.scaled(205,160, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        label.setScaledContents(True)
+        label.resize(10,10)
+        self.table_widget.setCellWidget(1, 1, label)
 
 
 if __name__ == '__main__':
