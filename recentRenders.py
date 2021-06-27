@@ -4,15 +4,12 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 
-from thumbnails import *
 
-
-class TableWidget(QTableWidget):
+class ListWidget(QListWidget):
     def __init__(self):
-        super(TableWidget, self).__init__()
+        super(ListWidget, self).__init__()
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
-        self.setStyleSheet("QTableWidget{background-color: transparent}")
 
     def mouseMoveEvent(self, event):
         current_value = self.currentItem()
@@ -30,47 +27,27 @@ class TableWidget(QTableWidget):
 class DisplayRenders(QWidget):
     def __init__(self):
         super(DisplayRenders, self).__init__()
-        self.resize(500, 600)
+        self.layout = QGridLayout()
+        self.list_widget_render = ListWidget()
+        self.layout.addWidget(self.list_widget_render)
+        self.setLayout(self.layout)
+        self.modify_ui()
+        self.add_renders_list()
 
+    def modify_ui(self):
+        self.setWindowTitle("Recent Renders")
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)
+        self.resize(700,600)
+        self.list_widget_render.setIconSize(QSize(200,200))
 
-        self.animation = QPropertyAnimation(self, b'geometry')
-        self.animation.setDuration(250)
-        self.animation.setStartValue(QRect(700,300,600,5))
-        self.animation.setEndValue(QRect(700,300,500,600))
-        self.animation.setEasingCurve(QEasingCurve.OutCurve)
-        self.animation.start()
+    def add_renders_list(self):
+        for i in range(10):
+            item = QListWidgetItem(r"F:\NukePython\RecentRenders\renders\TLO_206_021_650_ftg-001_v001")
+            icon = QIcon(r"F:\NukePython\RecentRenders\renders\TLO_206_021_650_ftg-001_v001\TLO_206_021_650_ftg-001_v001.0001.jpg")
+            item.setIcon(icon)
 
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_NoSystemBackground)
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.row_height = 110
-        self.column_width = 110
-        self.gblayout = QGridLayout()
-        self.table_widget = TableWidget()
-        self.gblayout.addWidget(self.table_widget)
-        self.setLayout(self.gblayout)
-        self.table_widget.setRowCount(10)
-        self.table_widget.setColumnCount(4)
-        self.table_widget.setRowHeight(1,self.row_height)
-        self.table_widget.setColumnWidth(1,self.column_width)
-        self.table_widget.setShowGrid(False)
-        self.table_widget.horizontalHeader().hide()
-        self.table_widget.verticalHeader().hide()
-        self.table_widget.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.list_widget_render.addItem(item)
 
-
-
-
-
-        item = QTableWidgetItem(r"F:\NukePython\RecentRenders\thumbnails\blackadam.jpg")
-        self.table_widget.setItem(1, 1, item)
-        label = QLabel()
-        pixmap = QPixmap(r"F:\NukePython\RecentRenders\thumbnails\blackadam.jpg")
-        label.setPixmap(pixmap.scaled(self.column_width, self.row_height, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-        label.setScaledContents(True)
-        label.resize(10,10)
-        self.table_widget.setCellWidget(1, 1, label)
 
 
 def run():
