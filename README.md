@@ -1,2 +1,2 @@
 # RecentRenders
-RecentRenders will disaplay recently rendered files in nuke
+RecentRenders will display recently rendered files in nuke
