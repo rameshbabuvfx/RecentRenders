@@ -1,7 +1,6 @@
 import nuke
 
 import recentRenders
-
 from utils import recentRenderUpdate
 
 

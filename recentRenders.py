@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import subprocess
@@ -40,6 +41,8 @@ class DisplayRenders(QWidget):
         self.list_widget_render = ListWidget()
         self.layout.addWidget(self.list_widget_render)
         self.setLayout(self.layout)
+        self.modify_ui()
+        self.add_renders_list()
 
     def modify_ui(self):
         """
@@ -58,9 +61,17 @@ class DisplayRenders(QWidget):
 
         :return: None
         """
-        for render_path in self.recent_renders_list():
-            item = QListWidgetItem(render_path)
-            icon = QIcon(r"D:\PythonProjects\NukePython\RecentRenders\renders\tmp_icon.png")
+        with open(config.RENDER_DATA_JSON, "r") as file:
+            render_json = json.load(file)
+        render_paths = render_json['recent_renders']
+
+        for path in render_paths:
+            if not path.endswith(("mov", "mp4")):
+                path = os.path.dirname(path)
+
+            item = QListWidgetItem(path)
+            thumbnail_name = "{}.{}".format(os.path.basename(path).split(".")[0], "jpg")
+            icon = QIcon(os.path.join(config.THUMBNAILS, thumbnail_name))
             item.setIcon(icon)
             self.list_widget_render.addItem(item)
 
@@ -78,15 +89,15 @@ def run():
     """
     Runs Application.
 
-    :return:
+    :return: None
     """
     create_thumbnail()
     run.obj = DisplayRenders()
     run.obj.show()
 
 
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     obj = DisplayRenders()
-#     obj.show()
-#     sys.exit(app.exec_())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    obj = DisplayRenders()
+    obj.show()
+    sys.exit(app.exec_())
