@@ -1,7 +1,11 @@
-import nukescripts
+import nuke
+
 import recentRenders
 
-# nukescripts.registerWidgetAsPanel('DisplayRenders', "RecentRenders", 'uk.co.thefoundry.DisplayRenders', True)
+from utils import recentRenderUpdate
+
+
+nuke.knobDefault("Write.afterRender", "recentRenderUpdate.update_renders_data()")
 
 menu = nuke.toolbar('Nodes')
 menu.addCommand('RRenders', 'recentRenders.run()')
