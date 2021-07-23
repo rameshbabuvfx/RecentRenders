@@ -13,6 +13,7 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 
 import config
+from utils import recentRenderUpdate
 
 
 class ListWidget(QListWidget):
@@ -24,10 +25,13 @@ class ListWidget(QListWidget):
     def mouseMoveEvent(self, event):
         current_value = self.currentItem()
         mime = QMimeData()
-        mime.setText(current_value.text())
+        render_path = current_value.text()
+        if not render_path.endswith(("mov", "mp4")):
+            render_path = os.path.dirname(render_path)
+        mime.setText(render_path)
         drag = QDrag(self)
         drag.setMimeData(mime)
-        print(current_value.text())
+        print(render_path)
         drag.exec_(Qt.CopyAction)
 
     def dropEvent(self, event):
@@ -66,9 +70,6 @@ class DisplayRenders(QWidget):
         render_paths = render_json['recent_renders']
 
         for path in render_paths:
-            if not path.endswith(("mov", "mp4")):
-                path = os.path.dirname(path)
-
             item = QListWidgetItem(path)
             thumbnail_name = "{}.{}".format(os.path.basename(path).split(".")[0], "jpg")
             icon = QIcon(os.path.join(config.THUMBNAILS, thumbnail_name))
@@ -91,6 +92,7 @@ def run():
 
     :return: None
     """
+    recentRenderUpdate.remove_older_renders()
     create_thumbnail()
     run.obj = DisplayRenders()
     run.obj.show()
