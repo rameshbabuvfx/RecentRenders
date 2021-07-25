@@ -1,6 +1,6 @@
 {
     "recent_renders": [
-        "D:/Footages/Test_Renders/test04.mov",
-        "D:/Footages/Test_Renders/test03.mov"
-    ]
+        "D:/Footages/Test_Renders/test01/TOF_206_021_670.%04d.exr"
+    ],
+    "renders_limit": 2
 }

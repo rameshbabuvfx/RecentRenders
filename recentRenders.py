@@ -41,11 +41,21 @@ class ListWidget(QListWidget):
 class DisplayRenders(QWidget):
     def __init__(self):
         super(DisplayRenders, self).__init__()
-        self.layout = QGridLayout()
+        self.vlayout = QVBoxLayout()
+        self.glayout = QGridLayout()
+        self.hlayout = QHBoxLayout()
         self.list_widget_render = ListWidget()
-        self.layout.addWidget(self.list_widget_render)
-        self.setLayout(self.layout)
+        self.renders_limit_spinbox = QSpinBox()
+        self.renders_limit_button = QPushButton("Set Renders Limit")
+        self.glayout.addWidget(self.list_widget_render)
+        self.hlayout.addWidget(self.renders_limit_spinbox)
+        self.hlayout.addWidget(self.renders_limit_button)
+        self.hlayout.addStretch()
+        self.vlayout.addLayout(self.glayout)
+        self.vlayout.addLayout(self.hlayout)
+        self.setLayout(self.vlayout)
         self.modify_ui()
+        self.connect_ui()
         self.add_renders_list()
 
     def modify_ui(self):
@@ -58,6 +68,31 @@ class DisplayRenders(QWidget):
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.resize(700, 600)
         self.list_widget_render.setIconSize(QSize(200, 200))
+        self.renders_limit_spinbox.setMaximumWidth(50)
+        self.renders_limit_button.setMaximumWidth(150)
+        render_json = recentRenderUpdate.read_json_data()
+        self.renders_limit_spinbox.setValue(render_json["renders_limit"])
+
+    def connect_ui(self):
+        """
+        Connects ui with custom functions.
+
+        :return:
+        """
+        self.renders_limit_button.clicked.connect(self.set_render_limit)
+
+    def set_render_limit(self):
+        """
+        Sets renders limit in json database.
+
+        :return:
+        """
+        render_json = recentRenderUpdate.read_json_data()
+
+        render_json["renders_limit"] = int(self.renders_limit_spinbox.text())
+        print(render_json)
+
+        recentRenderUpdate.write_json_data(render_json)
 
     def add_renders_list(self):
         """
