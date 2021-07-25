@@ -2,8 +2,6 @@ import os
 import sys
 import json
 import subprocess
-import threading
-import time
 
 try:
     import nuke
