@@ -71,7 +71,7 @@ class DisplayRenders(QWidget):
         self.renders_limit_spinbox.setMaximumWidth(50)
         self.renders_limit_button.setMaximumWidth(150)
         render_json = recentRenderUpdate.read_json_data()
-        self.renders_limit_spinbox.setValue(render_json["renders_limit"])
+        self.renders_limit_spinbox.setValue((render_json["renders_limit"]) + 1)
 
     def connect_ui(self):
         """
@@ -89,8 +89,7 @@ class DisplayRenders(QWidget):
         """
         render_json = recentRenderUpdate.read_json_data()
 
-        render_json["renders_limit"] = int(self.renders_limit_spinbox.text())
-        print(render_json)
+        render_json["renders_limit"] = int(self.renders_limit_spinbox.text())-1
 
         recentRenderUpdate.write_json_data(render_json)
 

@@ -8,6 +8,7 @@ import config
 
 import recentRenderUpdate
 
+
 def create_thumbnails():
     """
     Generates thumbnails for main listwidget.
@@ -24,7 +25,7 @@ def create_thumbnails():
 
         reformat_node.setInput(0, read_node)
         time_now = datetime.datetime.now().strftime("%H_%M_%S")
-        thumbnail_name = "{}_{}.{}".format(os.path.basename(path).split(".")[0], "jpg")
+        thumbnail_name = "{}.{}".format(os.path.basename(path).split(".")[0], "jpg")
         write_path = os.path.join(config.THUMBNAILS, thumbnail_name)
         write_node = nuke.nodes.Write(file=write_path.replace("\\", "/"))
         write_node.setInput(0, reformat_node)

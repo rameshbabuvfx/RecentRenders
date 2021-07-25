@@ -58,7 +58,9 @@ def remove_older_renders():
             updated_render_list.append(render_path)
         else:
             thumbnail_name = "{}.{}".format(os.path.basename(render_path).split(".")[0], "jpg")
-            os.remove(os.path.join(config.THUMBNAILS, thumbnail_name))
+            older_thubmail_path = "{}/{}".format(config.THUMBNAILS,thumbnail_name)
+            if os.path.exists(older_thubmail_path):
+                os.remove(older_thubmail_path)
 
     render_json["recent_renders"] = updated_render_list
     write_json_data(render_json)
