@@ -2,6 +2,8 @@ import os
 import sys
 import json
 import subprocess
+import threading
+import time
 
 try:
     import nuke
@@ -111,6 +113,18 @@ class DisplayRenders(QWidget):
             self.list_widget_render.addItem(item)
 
 
+class LoadingLabel(QWidget):
+    def __init__(self):
+        super(LoadingLabel, self).__init__()
+        self.resize(500, 50)
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.layout = QGridLayout()
+        self.label = QLabel()
+        self.label.setText("Loading...")
+        self.layout.addWidget(self.label)
+        self.setLayout(self.layout)
+
+
 def create_thumbnail():
     """
     Runs thumbnailCreator in subprocess.
@@ -128,8 +142,8 @@ def run():
     """
     recentRenderUpdate.remove_older_renders()
     create_thumbnail()
-    run.obj = DisplayRenders()
-    run.obj.show()
+    run.display = DisplayRenders()
+    run.display.show()
 
 
 if __name__ == '__main__':
