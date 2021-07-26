@@ -1,7 +1,10 @@
 {
     "recent_renders": [
-        "D:/Footages/Test_Renders/test04/TOF_206_021_70.%04d.exr",
-        "D:/Footages/Test_Renders/test03/TOF_206_021_60.%04d.exr"
+        "D:/Footages/Test_Renders/SHOT_76_Additional_v001.mov",
+        "D:/Footages/Test_Renders/TLO_206_021_800_ftg/TLO_206_021_800_ftg.%04d.png",
+        "D:/Footages/Test_Renders/TLO_206_021_680/TLO_206_021_680.%04d.dpx",
+        "D:/Footages/Test_Renders/TLO_206_021_670_ftg-001_v001/TLO_206_021_670_ftg-001_v001.%04d.tiff",
+        "D:/Footages/Test_Renders/TLO_206_021_650/TLO_206_021_650_ftg-001_v001.%04d.jpg"
     ],
-    "renders_limit": 1
+    "renders_limit": 4
 }

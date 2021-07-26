@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import time
 import subprocess
 
 try:
@@ -66,7 +67,7 @@ class DisplayRenders(QWidget):
         """
         self.setWindowTitle("Recent Renders")
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
-        self.resize(700, 600)
+        self.resize(750, 600)
         self.list_widget_render.setIconSize(QSize(200, 200))
         self.renders_limit_spinbox.setMaximumWidth(50)
         self.renders_limit_button.setMaximumWidth(150)
@@ -109,18 +110,6 @@ class DisplayRenders(QWidget):
             icon = QIcon(os.path.join(config.THUMBNAILS, thumbnail_name))
             item.setIcon(icon)
             self.list_widget_render.addItem(item)
-
-
-class LoadingLabel(QWidget):
-    def __init__(self):
-        super(LoadingLabel, self).__init__()
-        self.resize(500, 50)
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self.layout = QGridLayout()
-        self.label = QLabel()
-        self.label.setText("Loading...")
-        self.layout.addWidget(self.label)
-        self.setLayout(self.layout)
 
 
 def create_thumbnail():

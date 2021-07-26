@@ -1,6 +1,4 @@
 import os
-import json
-import datetime
 
 import nuke
 
@@ -21,9 +19,8 @@ def create_thumbnails():
 
     for path in render_paths:
         read_node = nuke.nodes.Read(file=path)
-        reformat_node = nuke.nodes.Reformat(format="PC_Video", black_outside=True)
+        reformat_node = nuke.nodes.Reformat(format="PC_Video", black_outside=True, resize="fill")
         reformat_node.setInput(0, read_node)
-        time_now = datetime.datetime.now().strftime("%H_%M_%S")
         thumbnail_name = "{}.{}".format(os.path.basename(path).split(".")[0], "jpg")
         write_path = os.path.join(config.THUMBNAILS, thumbnail_name)
         write_node = nuke.nodes.Write(file=write_path.replace("\\", "/"))
