@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-import time
+import platform
 import subprocess
 
 try:
@@ -45,10 +45,10 @@ class DisplayRenders(QWidget):
         self.vlayout = QVBoxLayout()
         self.glayout = QGridLayout()
         self.hlayout = QHBoxLayout()
-        self.list_widget_render = ListWidget()
+        self.renders_list_widget = ListWidget()
         self.renders_limit_spinbox = QSpinBox()
         self.renders_limit_button = QPushButton("Set Renders Limit")
-        self.glayout.addWidget(self.list_widget_render)
+        self.glayout.addWidget(self.renders_list_widget)
         self.hlayout.addWidget(self.renders_limit_spinbox)
         self.hlayout.addWidget(self.renders_limit_button)
         self.hlayout.addStretch()
@@ -68,11 +68,13 @@ class DisplayRenders(QWidget):
         self.setWindowTitle("Recent Renders")
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.resize(750, 600)
-        self.list_widget_render.setIconSize(QSize(200, 200))
+        self.renders_list_widget.setIconSize(QSize(200, 200))
         self.renders_limit_spinbox.setMaximumWidth(50)
         self.renders_limit_button.setMaximumWidth(150)
         render_json = recentRenderUpdate.read_json_data()
         self.renders_limit_spinbox.setValue((render_json["renders_limit"]) + 1)
+        self.renders_list_widget.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.renders_list_widget.customContextMenuRequested.connect(self.add_context_menu)
 
     def connect_ui(self):
         """
@@ -109,7 +111,20 @@ class DisplayRenders(QWidget):
             thumbnail_name = "{}.{}".format(os.path.basename(path).split(".")[0], "jpg")
             icon = QIcon(os.path.join(config.THUMBNAILS, thumbnail_name))
             item.setIcon(icon)
-            self.list_widget_render.addItem(item)
+            self.renders_list_widget.addItem(item)
+
+    def add_context_menu(self, pos):
+        menu = QMenu()
+        open_location = menu.addAction("Open Location")
+        action = menu.exec_(self.renders_list_widget.mapToGlobal(pos))
+        if action == open_location:
+            self.open_render_location()
+
+    def open_render_location(self):
+        if platform.system() == "Windows":
+            subprocess.Popen(r'explorer /select,"D:\PythonProjects\NukePython\RecentRenders\thumbnails"')
+        else:
+            pass
 
 
 def create_thumbnail():
