@@ -32,7 +32,6 @@ class ListWidget(QListWidget):
         mime.setText(render_path)
         drag = QDrag(self)
         drag.setMimeData(mime)
-        print(render_path)
         drag.exec_(Qt.CopyAction)
 
     def dropEvent(self, event):
@@ -116,15 +115,18 @@ class DisplayRenders(QWidget):
     def add_context_menu(self, pos):
         menu = QMenu()
         open_location = menu.addAction("Open Location")
-        action = menu.exec_(self.renders_list_widget.mapToGlobal(pos))
-        if action == open_location:
-            self.open_render_location()
+        open_location.triggered.connect(self.open_render_location)
+        menu.exec_(self.renders_list_widget.mapToGlobal(pos))
 
     def open_render_location(self):
+        selected_item = self.renders_list_widget.currentItem().text()
+        item_path = selected_item.replace("/", "\\")
+        if not item_path.endswith(("mov", "mp4")):
+            item_path = os.path.dirname(item_path)
         if platform.system() == "Windows":
-            subprocess.Popen(r'explorer /select,"D:\PythonProjects\NukePython\RecentRenders\thumbnails"')
+            subprocess.Popen('explorer /select, {}'.format(item_path))
         else:
-            pass
+            subprocess.Popen(['xdg-open', '--', item_path])
 
 
 def create_thumbnail():
