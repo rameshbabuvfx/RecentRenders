@@ -1,13 +1,12 @@
+"""
+__author__ = Ramesh Babu.
+"""
+
 import os
 import sys
 import json
 import platform
 import subprocess
-
-try:
-    import nuke
-except:
-    pass
 
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
@@ -65,6 +64,7 @@ class DisplayRenders(QWidget):
         :return:
         """
         self.setWindowTitle("Recent Renders")
+        self.setWindowIcon(QIcon(config.MAIN_ICON))
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.resize(750, 600)
         self.renders_list_widget.setIconSize(QSize(200, 200))
@@ -74,6 +74,7 @@ class DisplayRenders(QWidget):
         self.renders_limit_spinbox.setValue((render_json["renders_limit"]) + 1)
         self.renders_list_widget.setContextMenuPolicy(Qt.CustomContextMenu)
         self.renders_list_widget.customContextMenuRequested.connect(self.add_context_menu)
+        self.renders_list_widget.setStyleSheet("QListWidget::item:selected{background: rgb(78,110,88);}")
 
     def connect_ui(self):
         """
@@ -113,12 +114,22 @@ class DisplayRenders(QWidget):
             self.renders_list_widget.addItem(item)
 
     def add_context_menu(self, pos):
+        """
+        Added context menu for selected item.
+
+        :return: None.
+        """
         menu = QMenu()
-        open_location = menu.addAction("Open Location")
+        open_location = menu.addAction(QIcon(config.FILE_ICON), "Open Location")
         open_location.triggered.connect(self.open_render_location)
         menu.exec_(self.renders_list_widget.mapToGlobal(pos))
 
     def open_render_location(self):
+        """
+        Opens file location of selected render path.
+
+        :return: None.
+        """
         selected_item = self.renders_list_widget.currentItem().text()
         item_path = selected_item.replace("/", "\\")
         if not item_path.endswith(("mov", "mp4")):
