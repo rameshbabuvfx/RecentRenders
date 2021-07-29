@@ -111,7 +111,7 @@ class DisplayRenders(QWidget):
             thumbnail_name = "{}.{}".format(os.path.basename(path).split(".")[0], "jpg")
             thumbnail_path = os.path.join(config.THUMBNAILS, thumbnail_name)
             if not os.path.exists(thumbnail_path):
-                thumbnail_path = os.path.join(config.THUMBNAILS, "No_Image.jpg")
+                thumbnail_path = os.path.join(config.NO_IMAGE)
             icon = QIcon(thumbnail_path)
             item.setIcon(icon)
             self.renders_list_widget.addItem(item)

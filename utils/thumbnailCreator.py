@@ -25,10 +25,14 @@ def create_thumbnails():
         write_path = os.path.join(config.THUMBNAILS, thumbnail_name)
         write_node = nuke.nodes.Write(file=write_path.replace("\\", "/"))
         write_node.setInput(0, reformat_node)
-        if not os.path.exists(write_path):
+        if path.endswith(("mov", "mp4", "mkv")):
+            path_exists = path
+        else:
+            path_exists = os.path.dirname(path)
+        if os.path.exists(path_exists) and not os.path.exists(write_path):
+            print(path_exists)
             nuke.execute(write_node, 1, 1)
 
 
 if __name__ == '__main__':
     create_thumbnails()
-
