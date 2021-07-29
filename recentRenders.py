@@ -66,7 +66,7 @@ class DisplayRenders(QWidget):
         self.setWindowTitle("Recent Renders")
         self.setWindowIcon(QIcon(config.MAIN_ICON))
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
-        self.resize(750, 600)
+        self.resize(950, 600)
         self.renders_list_widget.setIconSize(QSize(200, 200))
         self.renders_limit_spinbox.setMaximumWidth(50)
         self.renders_limit_button.setMaximumWidth(150)
@@ -109,7 +109,10 @@ class DisplayRenders(QWidget):
         for path in render_paths:
             item = QListWidgetItem(path)
             thumbnail_name = "{}.{}".format(os.path.basename(path).split(".")[0], "jpg")
-            icon = QIcon(os.path.join(config.THUMBNAILS, thumbnail_name))
+            thumbnail_path = os.path.join(config.THUMBNAILS, thumbnail_name)
+            if not os.path.exists(thumbnail_path):
+                thumbnail_path = os.path.join(config.THUMBNAILS, "No_Image.jpg")
+            icon = QIcon(thumbnail_path)
             item.setIcon(icon)
             self.renders_list_widget.addItem(item)
 
