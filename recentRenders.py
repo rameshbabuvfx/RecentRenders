@@ -24,6 +24,7 @@ class ListWidget(QListWidget):
 
     def mouseMoveEvent(self, event):
         """ Modify mouse events """
+
         current_value = self.currentItem()
         mime = QMimeData()
         render_path = current_value.text()
