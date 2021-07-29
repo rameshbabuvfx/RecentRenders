@@ -23,6 +23,7 @@ class ListWidget(QListWidget):
         self.setAcceptDrops(True)
 
     def mouseMoveEvent(self, event):
+        """ Modify mouse events """
         current_value = self.currentItem()
         mime = QMimeData()
         render_path = current_value.text()
@@ -61,7 +62,7 @@ class DisplayRenders(QWidget):
         """
         Modifies UI widgets.
 
-        :return:
+        :return: None.
         """
         self.setWindowTitle("Recent Renders")
         self.setWindowIcon(QIcon(config.MAIN_ICON))
@@ -80,7 +81,7 @@ class DisplayRenders(QWidget):
         """
         Connects ui with custom functions.
 
-        :return:
+        :return: None.
         """
         self.renders_limit_button.clicked.connect(self.set_render_limit)
 
@@ -88,7 +89,7 @@ class DisplayRenders(QWidget):
         """
         Sets renders limit in json database.
 
-        :return:
+        :return: None.
         """
         render_json = recentRenderUpdate.read_json_data()
 
